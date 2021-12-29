@@ -1,9 +1,10 @@
 #include"Game.h"
 #include"Display.h"
 #include"InputHandler.h"
+
 using namespace std;
 
-int main() {
+int main(int argc, char* argv[]) {
 	// display_3 ( opening menu)
 	// wait input_3 ( new game, continue game, end game ... )
 

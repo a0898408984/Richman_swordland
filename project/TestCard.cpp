@@ -3,9 +3,9 @@ TestCard::TestCard() : MissionCard("´ú¸Õ¥d", "½ò¨ì¥ô°Èªº¤H¦h500¤¸¨ä¥L¦©50¦Û¤v©Ð¤
 {
 }
 
-void TestCard::show(People* ptr1, People** ptr2 , House** ptr3) {
+void TestCard::show(People* ptr1, People** ptr2, int playerNum, House** ptr3) {
 	ptr1->setCash(ptr1->getCash() + 500); // ¥[¦Û¤v500
-	for (int i = 0; i < 4; i++) { // °£¤F¦Û¤v¥H¥~¤j®a¦©50
+	for (int i = 0; i < playerNum; i++) { // °£¤F¦Û¤v¥H¥~¤j®a¦©50
 		if (ptr2[i]->getId() == ptr1->getId())continue;
 		ptr2[i]->setCash(ptr2[i]->getCash() - 50);
 	}

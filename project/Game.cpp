@@ -59,7 +59,7 @@ void Game::mapEvent(int nextPos, int who) {
 	else if (status == 3) {
 		// display 7 ( show card info
 		ptrDisplay->display7();
-		ptrCards[usedCards]->show(ptrPeople[who],ptrPeople,ptrMap->mapHouse);
+		ptrCards[usedCards]->show(ptrPeople[who],ptrPeople,numOfPlayers,ptrMap->mapHouse);
 		usedCards++;
 		// wait input3 ( information
 		// display 0

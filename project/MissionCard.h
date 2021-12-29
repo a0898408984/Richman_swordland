@@ -12,7 +12,7 @@ public:
 	std::string getName();
 	std::string getDescription();
 
-	virtual void show(People* ,People**,House**) {};
+	virtual void show(People* ptr1, People** ptr2, int playerNum, House** ptr3) {};
 private:
 	std::string name;
 	std::string description;
