@@ -106,5 +106,5 @@ void Display::display13() {
 	for (int i = 0; i < 4; i++) {
 		cout <<i + 1 << setw(20) << ptrGame->ptrPeople[i]->getName() << " ³Ñ¤U " << ptrGame->ptrPeople[i]->getCash() << endl;
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	std::this_thread::sleep_for(std::chrono::milliseconds(100*1000));
 }
