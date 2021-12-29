@@ -1,6 +1,8 @@
 #pragma once
 #include<string>
 #include"People.h"
+#define PASSORIGIN 2000
+
 class House
 {
 public:

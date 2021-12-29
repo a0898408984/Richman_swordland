@@ -1,9 +1,11 @@
 #include"Kirito.h"
-#include<iostream>
 Kirito::Kirito() :People ("Kirito", 3000, 0, 0){
 	;
 }
 
+
+
+// 骰到高點的機會增加
 void Kirito::rollDiceNum(Dice*& ptr) {
 	int dice_kirito = Dice::randomInt(1, 10);
 

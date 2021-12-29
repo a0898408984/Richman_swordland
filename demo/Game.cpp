@@ -1,6 +1,6 @@
 #include"Game.h"
 #include<algorithm>
-#define PASSORIGIN 2000
+
 
 void Game::mapEvent(int nextPos, int who) {
 	int status = ptrMap->maptile(nextPos);
@@ -137,7 +137,7 @@ bool Game::run(){
 		ptrDisplay->display0();
 		mapEvent(nextPos, who);
 		
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < numOfPlayers; i++) {
 			if (ptrPeople[i]->getCash() < 0) { // sell 
 				for (int j = 0; j < 32; j++) { // temporary bad algo
 					if (ptrMap->mapHouse[j]) {
@@ -157,7 +157,7 @@ bool Game::run(){
 				}
 			}
 		}
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < numOfPlayers; i++) {
 			if (ptrPeople[i]->getCash() < 0) {
 				endGame = 1;
 				break;

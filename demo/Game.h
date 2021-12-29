@@ -6,11 +6,27 @@
 #include"Map.h"
 #include"People.h"
 #include"Kirito.h"
+#include"Heathcliff.h"
+#include"Klein.h"
+#include"Asuna.h"
 
 #include"MissionCard.h"
 #include"TestCard.h"
 
-#define NUMOFCARDS 40
+#include"LuckCard.h"
+#include"SLuckCard.h"
+#include"JinxCard.h"
+#include"SJinxCard.h"
+#include"ChangePosCard.h"
+#include"PrisonCard.h"
+#include"FastCard.h"
+#include"FireCard.h"
+#include"MFireCard.h"
+#include"FortuneCard.h"
+
+#define NUMOFCARDS 500
+#define TYPECARDS 10
+
 class Display;
 class Game
 {
@@ -56,13 +72,13 @@ public:
 				ptrPeople[i] = new Kirito;
 			}
 			else if (chooseOrder[i] == 1) {
-				ptrPeople[i] = new People;
+				ptrPeople[i] = new Asuna;
 			}
 			else if (chooseOrder[i] == 2) {
-				ptrPeople[i] = new People;
+				ptrPeople[i] = new Klein;
 			}
 			else {
-				ptrPeople[i] = new People;
+				ptrPeople[i] = new Heathcliff;
 			}
 			ptrPeople[i]->setOrder(i);
 		}
@@ -72,10 +88,41 @@ public:
 		ptrCards = new MissionCard*[NUMOFCARDS];
 		cardsArray = new int[NUMOFCARDS];
 		for (int i = 0; i < NUMOFCARDS; i++)
-			cardsArray[i] = 0;
+			cardsArray[i] = Dice::randomInt(1, TYPECARDS);
+		//cardsArray[0] = 0;
 		for (int i = 0; i < NUMOFCARDS; i++) {
 			if (cardsArray[i] == 0) {
 				ptrCards[i] = new TestCard();
+			}
+			else if (cardsArray[i] == TYPECARDS) {
+				ptrCards[i] = new LuckCard();
+			}
+			else if (cardsArray[i] + 1 == TYPECARDS) {
+				ptrCards[i] = new SLuckCard();
+			}
+			else if (cardsArray[i] + 2 == TYPECARDS) {
+				ptrCards[i] = new JinxCard();
+			}
+			else if (cardsArray[i] + 3 == TYPECARDS) {
+				ptrCards[i] = new SJinxCard();
+			}
+			else if (cardsArray[i] + 4 == TYPECARDS) {
+				ptrCards[i] = new ChangePosCard();
+			}
+			else if (cardsArray[i] + 5 == TYPECARDS) {
+				ptrCards[i] = new PrisonCard();
+			}
+			else if (cardsArray[i] + 6 == TYPECARDS) {
+				ptrCards[i] = new FastCard();
+			}
+			else if (cardsArray[i] + 7 == TYPECARDS) {
+				ptrCards[i] = new FireCard();
+			}
+			else if (cardsArray[i] + 8 == TYPECARDS) {
+				ptrCards[i] = new MFireCard();
+			}
+			else if (cardsArray[i] + 9 == TYPECARDS) {
+				ptrCards[i] = new FortuneCard();
 			}
 		}
 

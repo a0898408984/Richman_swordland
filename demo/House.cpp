@@ -84,6 +84,12 @@ void House::buildHouse(People* who) {
 
 
 double House::getSumOfPrice() {
+	if (owner) {
+		sumOfPrice = this->landPrice + this->landPrice * 0.5 * this->houseNum;
+	}
+	else {
+		sumOfPrice = 0;
+	}
 	return sumOfPrice;
 }
 double House::getTolls() {
