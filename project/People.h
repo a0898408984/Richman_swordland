@@ -7,7 +7,7 @@
 
 class People{
 public:
-	People(std::string s = INITIALNAME, double cashmoney = INITIALMONEY, double depositmoney = INITIALDEPOSIT); // 名字, 現金, 存款
+	People(std::string s = INITIALNAME, double cashmoney = INITIALMONEY, double depositmoney = INITIALDEPOSIT, int = 0); // 名字, 現金, 存款, 種類
 	~People();
 	int getDiceNum(Dice*&);
 	virtual void rollDiceNum(Dice*& d) {
@@ -37,6 +37,7 @@ private:
 	bool doubleHousePrice;
 	int id;
 	int pos;
+	int characterType;
 	int order;
 };
 

@@ -1,6 +1,6 @@
 #include"Kirito.h"
 #include<iostream>
-Kirito::Kirito() :People ("Kirito", 3000, 0){
+Kirito::Kirito() :People ("Kirito", 3000, 0, 0){
 	;
 }
 

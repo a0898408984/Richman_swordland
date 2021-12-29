@@ -29,6 +29,19 @@ void Display::display0() {
 		cout << setw(20) << ptrGame->ptrPeople[i]->getPos();
 		cout << setw(20) << ptrGame->ptrPeople[i]->getOrder();
 		cout << endl;
+		cout << setw(6) << "©Ð«Î: ";
+		for (int j = 0; j < 32; j++) {
+			if (ptrGame->ptrMap->mapHouse[j]) {
+				if (ptrGame->ptrMap->mapHouse[j]->sameOwner(ptrGame->ptrPeople[i])) {
+					cout << setw(3) << ptrGame->ptrMap->mapHouse[j]->getHouseNum();
+				}
+				else
+					cout << setw(3) << -1;
+			}
+			else
+				cout << setw(3) << -1;
+		}
+		cout << endl;
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(500)); 
 }

@@ -1,6 +1,6 @@
 #include"People.h"
 
-People::People(std::string s, double cashmoney, double depositmoney)
+People::People(std::string s, double cashmoney, double depositmoney, int characterTypenum)
 {
 	deposit = depositmoney;
 	cash = cashmoney;
@@ -12,6 +12,7 @@ People::People(std::string s, double cashmoney, double depositmoney)
 	id = sum + Dice::randomInt(1, 100000);
 	pos = 0;
 	order = 0;
+	characterType = characterTypenum;
 }
 
 bool People::getDoubleHousePrice() {

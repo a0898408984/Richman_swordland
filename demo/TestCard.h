@@ -5,7 +5,7 @@ class TestCard : public MissionCard
 public:
 	TestCard();
 	~TestCard() {};
-	void show() { ; }
+	void show(People*, People**, House**);
 private:
 
 };
