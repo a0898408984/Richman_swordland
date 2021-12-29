@@ -21,7 +21,7 @@ public:
 	int getId();
 	int getPos();
 	int getOrder();
-
+	int getCharType() { return characterType; }
 	
 	void setName(std::string);
 	void setCash(double);
