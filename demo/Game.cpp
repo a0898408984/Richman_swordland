@@ -1,7 +1,11 @@
 #include"Game.h"
 #include<algorithm>
-
-
+#include<fstream>
+#define SAVEFILEMAPNOTHOUSE -128763
+#define SAVEFILEMAPNOTOWNER -12876300
+#define SAVEFILEENDING -102040240
+#define SAVEFILEENDINGSTR "-102040240"
+#define SAVEGAMEPATH "saveGame.txt"
 void Game::mapEvent(int nextPos, int who) {
 	int status = ptrMap->maptile(nextPos);
 	if (status == 0) {
@@ -101,13 +105,73 @@ void Game::mapEvent(int nextPos, int who) {
 		;
 	}
 }
+void Game::loadCardAndPeople() {
+	ptrPeople = new People * [numOfPlayers];
+	for (int i = 0; i < numOfPlayers; i++) {
+		if (chooseCharOrder[i] == 0) {
+			ptrPeople[i] = new Kirito;
+		}
+		else if (chooseCharOrder[i] == 1) {
+			ptrPeople[i] = new Asuna;
+		}
+		else if (chooseCharOrder[i] == 2) {
+			ptrPeople[i] = new Klein;
+		}
+		else {
+			ptrPeople[i] = new Heathcliff;
+		}
+		ptrPeople[i]->setOrder(i);
+	}
+	ptrCards = new MissionCard * [NUMOFCARDS];
+	for (int i = 0; i < NUMOFCARDS; i++) {
+		if (cardsArray[i] == 0) {
+			ptrCards[i] = new TestCard();
+		}
+		else if (cardsArray[i] == TYPECARDS) {
+			ptrCards[i] = new LuckCard();
+		}
+		else if (cardsArray[i] + 1 == TYPECARDS) {
+			ptrCards[i] = new SLuckCard();
+		}
+		else if (cardsArray[i] + 2 == TYPECARDS) {
+			ptrCards[i] = new JinxCard();
+		}
+		else if (cardsArray[i] + 3 == TYPECARDS) {
+			ptrCards[i] = new SJinxCard();
+		}
+		else if (cardsArray[i] + 4 == TYPECARDS) {
+			ptrCards[i] = new ChangePosCard();
+		}
+		else if (cardsArray[i] + 5 == TYPECARDS) {
+			ptrCards[i] = new PrisonCard();
+		}
+		else if (cardsArray[i] + 6 == TYPECARDS) {
+			ptrCards[i] = new FastCard();
+		}
+		else if (cardsArray[i] + 7 == TYPECARDS) {
+			ptrCards[i] = new FireCard();
+		}
+		else if (cardsArray[i] + 8 == TYPECARDS) {
+			ptrCards[i] = new MFireCard();
+		}
+		else if (cardsArray[i] + 9 == TYPECARDS) {
+			ptrCards[i] = new FortuneCard();
+		}
+	}
+}
 bool Game::run(){
 	if (endGame)return true;
+	// before start
+	if (!newGame) 
+		loadGame();
+	if (newGame)
+		loadCardAndPeople();
+
 	// display 0
 	ptrDisplay->display0();
 	while (1) {
 		// todo::autosave
-
+		saveGame();
 		who = round % numOfPlayers;
 		if (prison[who]) {
 			prison[who]--;
@@ -176,3 +240,134 @@ People** Game::showRank() {
 	std::sort(ptrPeople,ptrPeople+4, compare1);
 	return this->ptrPeople;
 }
+
+
+bool Game::saveGame() {
+	std::fstream f;
+	f.open(SAVEGAMEPATH, std::ios::out);
+	if (!f.is_open())
+		return false;
+	f << numOfPlayers << std::endl;
+	f << usedCards << std::endl;
+	f << round << std::endl;
+	f << who << std::endl;
+	f << endGame << std::endl;
+	for(int i = 0; i < numOfPlayers; i ++)
+		f << chooseCharOrder[i] << std::endl;
+	for(int i = 0; i < NUMOFCARDS; i ++)
+		f << cardsArray[i] << std::endl;
+	for(int i =0; i < numOfPlayers; i++)
+		f << group1[i] << std::endl;
+	for (int i = 0; i < numOfPlayers; i++)
+		f << group2[i] << std::endl;
+	for (int i = 0; i < numOfPlayers; i++)
+		f << prison[i] << std::endl;
+
+	// people
+	for (int i = 0; i < numOfPlayers; i++) {
+		f << ptrPeople[i]->getCash() << std::endl;
+		f << ptrPeople[i]->getDeposit() << std::endl;
+		f << ptrPeople[i]->getPos() << std::endl;
+	}
+
+	// map / house
+	for (int i = 0; i < 32; i++) {
+		if (!ptrMap->mapHouse[i])
+			f << SAVEFILEMAPNOTHOUSE << std::endl; // -c8763 means nullptr
+		else {
+			f << ptrMap->mapHouse[i]->getHouseNum() << std::endl;
+			People* tmpPtr = ptrMap->mapHouse[i]->getOwner();
+			if(tmpPtr)
+				f << ptrMap->mapHouse[i]->getOwner()->getOrder() << std::endl;
+			else 
+				f << SAVEFILEMAPNOTOWNER << std::endl;
+		}
+	}
+
+	// dice
+	f << ptrDice->getDiceNum() << std::endl;
+
+	f << SAVEFILEENDING << std::endl;
+
+	f.close();
+	return true;
+}
+
+bool Game::loadGame() {
+	std::fstream f;
+	f.open(SAVEGAMEPATH, std::ios::in);
+	if (!f.is_open()) {
+		newGame = 1;
+		return false;
+	}
+	f >> numOfPlayers >> usedCards >> round >> who >> endGame;
+	delete[] chooseCharOrder;
+	delete[] group1;
+	delete[] group2;
+	delete[] prison;
+
+	chooseCharOrder = new int [numOfPlayers];
+	group1 = new int[numOfPlayers];
+	group2 = new int[numOfPlayers];
+	prison = new int[numOfPlayers];
+	int tmp;
+	for (int i = 0; i < numOfPlayers; i++) {
+		f >> tmp;
+		chooseCharOrder[i] = tmp;
+	}
+	for (int i = 0; i < NUMOFCARDS; i++) {
+		f >> tmp;
+		cardsArray[i] = tmp;
+	}
+	for (int i = 0; i < numOfPlayers; i++) {
+		f >> tmp;
+		group1[i] = tmp;
+	}
+	for (int i = 0; i < numOfPlayers; i++) {
+		f >> tmp;
+		group2[i] = tmp;
+	}
+	for (int i = 0; i < numOfPlayers; i++) {
+		f >> tmp;
+		prison[i] = tmp;
+	}
+
+	loadCardAndPeople();
+
+	// people
+	for (int i = 0; i < numOfPlayers; i++) {
+		int intTmp;
+		double doubleTmp;
+		f >> doubleTmp;
+		ptrPeople[i]->setCash(doubleTmp);
+		f >> doubleTmp;
+		ptrPeople[i]->setDeposit(doubleTmp);
+		f >> intTmp;
+		ptrPeople[i]->setPos(intTmp);
+	}
+
+	// map / house
+	for (int i = 0; i < 32; i++) {
+		int tmp;
+		f >> tmp;
+		if (tmp != SAVEFILEMAPNOTHOUSE) {
+			ptrMap->mapHouse[i]->setHouseNum(tmp);
+			f >> tmp;
+			if (tmp == SAVEFILEMAPNOTOWNER)
+				continue;
+			else
+				ptrMap->mapHouse[i]->setOwner(ptrPeople[tmp]);
+		}
+		else
+			continue;
+	}
+	// dice
+	int tmpDice;
+	f >> tmpDice;
+	ptrDice->setRollDice(tmpDice);
+
+	f.close();
+	newGame = 0;
+	return true;
+}
+

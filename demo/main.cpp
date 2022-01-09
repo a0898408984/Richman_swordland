@@ -1,9 +1,7 @@
 #include"Game.h"
 #include"Display.h"
 #include"InputHandler.h"
-
 using namespace std;
-
 
 int main(int argc, char* argv[]) {
 
@@ -12,11 +10,11 @@ int main(int argc, char* argv[]) {
 
 	// display_2  (choose gamer number)
 	// wait input_2 (input gamer number)
+
+
 	int num = Dice::randomInt(2,4);
 	int* chooseOrder= new int[num];
 	for (int i = 0; i < num; i++) {
-		// display_1
-		// wait input_1 (input gamer character
 		chooseOrder[i] = Dice::randomInt(0, 3);
 	}
 	InputHandler* ptrInput = new InputHandler();

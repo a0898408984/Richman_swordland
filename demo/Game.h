@@ -44,6 +44,7 @@ public:
 	int round = 0;
 	int who = 0;
 	bool endGame = 0;
+	bool newGame = 0;
 	int* chooseCharOrder;
 	int* cardsArray;
 	int* group1;
@@ -53,13 +54,14 @@ public:
 
 
 	Game(int num, int* chooseOrder) {
+
+
 		ptrDisplay = NULL;
 		ptrInput = NULL;
 		numOfPlayers = num;
 		group1 = new int[num];
 		group2 = new int[num];
 		prison = new int[num];
-		ptrPeople = new People * [num];
 		chooseCharOrder = new int[num];
 		for (int i = 0; i < num; i++) {
 			group1[i] = 0;
@@ -67,64 +69,13 @@ public:
 			prison[i] = 0;
 			chooseCharOrder[i] = chooseOrder[i];
 		}
-		for (int i = 0; i < num; i++) {
-			if (chooseOrder[i] == 0) {
-				ptrPeople[i] = new Kirito;
-			}
-			else if (chooseOrder[i] == 1) {
-				ptrPeople[i] = new Asuna;
-			}
-			else if (chooseOrder[i] == 2) {
-				ptrPeople[i] = new Klein;
-			}
-			else {
-				ptrPeople[i] = new Heathcliff;
-			}
-			ptrPeople[i]->setOrder(i);
-		}
 
 		ptrMap = new Map;
 
-		ptrCards = new MissionCard*[NUMOFCARDS];
 		cardsArray = new int[NUMOFCARDS];
 		for (int i = 0; i < NUMOFCARDS; i++)
 			cardsArray[i] = Dice::randomInt(1, TYPECARDS);
-		//cardsArray[0] = 0;
-		for (int i = 0; i < NUMOFCARDS; i++) {
-			if (cardsArray[i] == 0) {
-				ptrCards[i] = new TestCard();
-			}
-			else if (cardsArray[i] == TYPECARDS) {
-				ptrCards[i] = new LuckCard();
-			}
-			else if (cardsArray[i] + 1 == TYPECARDS) {
-				ptrCards[i] = new SLuckCard();
-			}
-			else if (cardsArray[i] + 2 == TYPECARDS) {
-				ptrCards[i] = new JinxCard();
-			}
-			else if (cardsArray[i] + 3 == TYPECARDS) {
-				ptrCards[i] = new SJinxCard();
-			}
-			else if (cardsArray[i] + 4 == TYPECARDS) {
-				ptrCards[i] = new ChangePosCard();
-			}
-			else if (cardsArray[i] + 5 == TYPECARDS) {
-				ptrCards[i] = new PrisonCard();
-			}
-			else if (cardsArray[i] + 6 == TYPECARDS) {
-				ptrCards[i] = new FastCard();
-			}
-			else if (cardsArray[i] + 7 == TYPECARDS) {
-				ptrCards[i] = new FireCard();
-			}
-			else if (cardsArray[i] + 8 == TYPECARDS) {
-				ptrCards[i] = new MFireCard();
-			}
-			else if (cardsArray[i] + 9 == TYPECARDS) {
-				ptrCards[i] = new FortuneCard();
-			}
-		}
+
 
 		ptrDice = new Dice;
 		who = 0;
@@ -137,13 +88,15 @@ public:
 	bool run();
 	void mapEvent(int,int);
 	int getDiceNow() { return  ptrDice->getDiceNum(); }
+	bool saveGame();
+	bool loadGame();
+	void loadCardAndPeople();
+	void setNewGame() { newGame = 1; } // before GameRun
+	void setContGame() { newGame = 0; } // before GameRun
 
 	// end
 	People** showRank();
 	
-	
-
 private:
-
 };
 
